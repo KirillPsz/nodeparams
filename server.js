@@ -50,7 +50,7 @@ app.post(`/webhook/${token}`, (req, res) => {
 });
 
 app.all('*', async (req, res) => {
-  res.sendMessage('Telegram only!');
+  res.status(404).send({success: false, error: {message: 'Telegram only!'}});
 });
 
 // Определяем обработчик команды /start
