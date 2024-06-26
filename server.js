@@ -15,7 +15,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.all('*', (req, res) => {
+app.all('*', async (req, res) => {
   // Заголовки запроса
   const headers = req.headers;
   
@@ -25,10 +25,11 @@ app.all('*', (req, res) => {
   // Тело запроса
   const body = req.body;
 
-  console.log(bot.body);
+  const me = await bot.getMe();
+  console.log(me);
 
-  if (!bot.body) {
-    res.statusCode(404).render('error');
+  if (!me) {
+    res.sendStatus(404);
     return;
   }
 
