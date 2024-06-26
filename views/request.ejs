@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Information</title>
+</head>
+<body>
+    <h1>Request Information</h1>
+    <h2>Headers:</h2>
+    <pre><%= JSON.stringify(headers, null, 2) %></pre>
+
+    <h2>Query Parameters:</h2>
+    <pre><%= JSON.stringify(queryParams, null, 2) %></pre>
+
+    <h2>Body:</h2>
+    <pre><%= JSON.stringify(body, null, 2) %></pre>
+</body>
+</html>
