@@ -8,6 +8,10 @@ const port = 3000;
 const token = '7310214755:AAF3dYvtpI48qArQS-poWIaPEi1_NH5etAA';
 const bot = new TelegramBot(token, { polling: true });
 
+// Установка вебхука для бота
+const webhookUrl = 'https://https://nodeparams.onrender.com/webhook/' + token;
+bot.setWebHook(webhookUrl);
+
 // Настройка шаблонизатора EJS
 app.set('view engine', 'ejs');
 
@@ -15,7 +19,19 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.all('*', async (req, res) => {
+app.post(`/webhook/${token}`, (req, res) => {
+  const { message } = req.body;
+  
+  if (message && message.text === '/start') {
+    // Генерация и сохранение перманентного токена для пользователя
+    // const permanentToken = generatePermanentToken();
+    // savePermanentToken(message.chat.id, permanentToken); // Примерная функция для сохранения токена
+    // Отправка ответа пользователю
+    // sendResponseToUser(message.chat.id, `Ваш перманентный токен: ${permanentToken}`);
+  }
+
+  bot.processUpdate(req.body);
+
   // Заголовки запроса
   const headers = req.headers;
   
@@ -25,14 +41,6 @@ app.all('*', async (req, res) => {
   // Тело запроса
   const body = req.body;
 
-  const me = await bot.getMe();
-  console.log(me);
-
-  if (!me) {
-    res.sendStatus(404);
-    return;
-  }
-
   // Отправка данных на страницу
   res.render('request', {
     headers,
@@ -41,10 +49,8 @@ app.all('*', async (req, res) => {
   });
 });
 
-// Определяем маршрут для обработки вебхуков от Telegram
-app.post(`/bot${token}`, (req, res) => {
-  bot.processUpdate(req.body);
-  res.sendStatus(200);
+app.all('*', async (req, res) => {
+  res.sendMessage('Telegram only!');
 });
 
 // Определяем обработчик команды /start
